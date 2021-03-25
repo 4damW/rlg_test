@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace CreateRenewLetter
 {
     class CsvData
     {
+        /*
+         * This value could be passed into the constructor
+         * to allow some flexibility on the source file.
+         */
         private string filename = "Customer.csv";
 
         private List<List<string>> csvData;
+
+        /*
+         * I like this - you have a fixed file spec that you expect
+         * and storing it up here it keeps it nice and readable and maintainable.
+         */
 
         private readonly string[] headings = { "ID", "TITLE", "FIRSTNAME", "SURNAME", "PRODUCTNAME", "PAYOUTAMOUNT", "ANNUALPREMIUM" };
         private readonly string[] titles = { "MISS", "MR", "MRS" };
@@ -43,10 +53,22 @@ namespace CreateRenewLetter
         /// </summary>
         private void readCsvFile()
         {
+            /*
+             * Considering inverting some logic to avoid pyramid of doom, i.e.
+             * if (file doesn't exist) return
+             * if (file length is zero) return
+             */
+
             if (File.Exists(filename))
             {
                 if (new FileInfo(filename).Length != 0)
                 {
+
+                    /*
+                     * Check out the File.ReadAllLines() method
+                     * which does some of this work for you
+                     */
+
                     var reader = new StreamReader(File.OpenRead(filename));
 
                     csvData = new List<List<string>>();
@@ -85,6 +107,27 @@ namespace CreateRenewLetter
         /// </summary>
         private void validateHeadings()
         {
+            /*
+             * Few points about this method
+             *
+             * a) It's doing a lot, and for me at least, takes a few passes to understand what it is doing.
+             * b) The method name could be refined to better reflect that it in addition
+             *    to validating the headings, it is also removing the row.
+             *
+             * I know the coding challenge is a bit wooly and doesn't specify whether a missing header
+             * should result in not processing the file, but, if we were to assume it would then this
+             * method could be simplified to compare both string[]'s and throwing if they don't match.
+             *
+             * For example:
+             */
+
+            if (!csvData[0].SequenceEqual(this.headings, StringComparer.OrdinalIgnoreCase))
+            {
+                throw new ApplicationException("Expected CSV header row not found.");
+            }
+            csvData.RemoveAt(0);
+
+            /*
             int headingCount = 7;
             bool headingsExsit = true;
 
@@ -113,6 +156,7 @@ namespace CreateRenewLetter
             {
                 csvData.RemoveAt(0);
             }
+            */
         }
 
         /// <summary>
@@ -122,6 +166,10 @@ namespace CreateRenewLetter
         /// <returns>validData</returns>
         private bool validateData(List<string> data)
         {
+            /*
+             *
+             */
+
             int test;
             decimal testDec;
 

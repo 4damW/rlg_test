@@ -6,7 +6,12 @@ namespace CreateRenewLetter
     {
         private int id;
 
-        private string title;
+        /*
+         * C# provides an alternative to having get() methods for backing fields - Auto-Implemented Properties  
+         * https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/auto-implemented-properties
+         */
+
+        public string Title { get; }
 
         private string firstName;
 
@@ -21,7 +26,7 @@ namespace CreateRenewLetter
         public GetData(List<string> dataRecord)
         {
             this.id = int.Parse(dataRecord[0]);
-            this.title = dataRecord[1];
+            this.Title = dataRecord[1];
             this.firstName = dataRecord[2];
             this.surname = dataRecord[3];
             this.productName = dataRecord[4];
@@ -34,10 +39,10 @@ namespace CreateRenewLetter
             return id;
         }
 
-        public string getTitle()
-        {
-            return title;
-        }
+        //public string getTitle()
+        //{
+        //    return title;
+        //}
 
         public string getFirstName()
         {
