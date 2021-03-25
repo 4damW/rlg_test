@@ -2,6 +2,12 @@
 
 namespace CreateRenewLetter
 {
+    /*
+     * Great stuff.
+     *
+     * Nice to see the use of a decimal for monetary precision and how you have chosen
+     * to split out the functionality into it's own class and methods.
+     */
     class DataCalculation
     {
         private decimal annualPremium;
@@ -19,6 +25,19 @@ namespace CreateRenewLetter
         public DataCalculation(decimal annualPremium)
         {
             this.annualPremium = annualPremium;
+
+            /*
+             * 99.9% .NET shops will be using PascalCase for method names
+             *
+             * A good page to check out is:
+             *
+             * https://blog.submain.com/coding-standards-c-developers-need/
+             *
+             * and of course
+             *
+             * https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions
+             */
+
             calculateCreditCharge();
             calculateTotalPremium();
             calculateMonthlyPayments();
